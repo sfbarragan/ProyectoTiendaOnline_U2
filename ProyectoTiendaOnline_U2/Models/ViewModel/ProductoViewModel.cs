@@ -25,7 +25,7 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
 
         public byte[] foto { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "This should be filled out")]
         [Display(Name = "id_categoria")]
         public int id_categoria { get; set; }
 
@@ -33,5 +33,8 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
         [StringLength(1)]
         [Display(Name = "estado")]
         public string estado { get; set; }
+
     }
+
+
 }

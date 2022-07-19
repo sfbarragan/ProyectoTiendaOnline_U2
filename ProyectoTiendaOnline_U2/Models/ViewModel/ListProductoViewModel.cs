@@ -16,6 +16,6 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModels
         public string estado { get; set; }
         public string categoria { get; set; }
 
-
+        
     }
 }
