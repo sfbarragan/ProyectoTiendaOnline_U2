@@ -48,7 +48,7 @@
             <br />
             <div>
                 @Html.LabelFor(d => d.categoria)
-                @Html.DropDownList("Producto", items, "Elija una categoria", new { @class = "form-control" })
+                @Html.DropDownList("cat", cate, "Seleccione una Categoria",new { @class = "form-control" })
                 @Html.ValidationMessageFor(d => d.categoria, null, new { @class = "red" })
             </div>
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ProyectoTiendaOnline_U2.Models.ViewModel
 {
@@ -25,9 +26,8 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
 
         public byte[] foto { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "This should be filled out")]
         [Display(Name = "id_categoria")]
-        public int id_categoria { get; set; }
+        public IEnumerable<SelectListItem> id_categoria { get; set; }
 
         [Required]
         [StringLength(1)]

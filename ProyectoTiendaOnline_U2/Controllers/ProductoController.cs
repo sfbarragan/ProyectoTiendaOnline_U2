@@ -82,6 +82,15 @@ namespace ProyectoTiendaOnline_U2.Controllers
                     Selected = false
                 };
             } );
+            var DB = new Models.sistema_ventasEntities();
+            IEnumerable<SelectListItem> cat = DB.categoria.Select
+                (b => new SelectListItem
+                {
+                    Value = b.id_categoria.ToString(),
+                    Text = b.nombre_categoria
+                });
+
+            ViewData["cat"] = cat;
 
             ViewBag.items = items;
 
@@ -122,7 +131,7 @@ namespace ProyectoTiendaOnline_U2.Controllers
                     });
 
                     ViewBag.items = items;
-
+                    
                     long IDCategoria = Convert.ToInt32(collection["id_categoria"].Trim());
 
                     HttpPostedFileBase FileBase = Request.Files[0];
