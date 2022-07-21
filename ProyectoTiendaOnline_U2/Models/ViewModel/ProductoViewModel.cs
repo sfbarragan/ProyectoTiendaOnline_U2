@@ -34,6 +34,13 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
         [Display(Name = "estado")]
         public string estado { get; set; }
 
+
+
+        [Required]
+        [StringLength(1)]
+        [Display(Name = "categoria")]
+        public string categoria { get; set; }
+
     }
 
 

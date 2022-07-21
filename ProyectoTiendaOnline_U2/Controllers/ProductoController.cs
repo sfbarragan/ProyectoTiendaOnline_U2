@@ -22,7 +22,7 @@ namespace ProyectoTiendaOnline_U2.Controllers
             using (sistema_ventasEntities db = new sistema_ventasEntities())
             {
                 listaProductos = (from p in db.producto
-                                  from c in db.categoria
+                                  from c in db.categoria where (p.id_categoria.Equals(c.id_categoria))
                                   select new ListProductoViewModel
                                   {
                                       id_producto = p.id_producto,
@@ -77,8 +77,6 @@ namespace ProyectoTiendaOnline_U2.Controllers
             {
                 return new SelectListItem()
                 {
-                    
-                
                     Text = d.nombre_categoria.ToString(),
                     Value = d.id_categoria.ToString(),
                     Selected = false
@@ -91,13 +89,41 @@ namespace ProyectoTiendaOnline_U2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Nuevo(ProductoViewModel productoModel, string categorias, string estados)
+        public ActionResult Nuevo(ProductoViewModel productoModel, FormCollection collection)
         {
             try
             {
                 //Validar el Modelo
                 if (ModelState.IsValid)
                 {
+                    List<CategoriasViewModel> lst = null;
+                    using (Models.sistema_ventasEntities db = new Models.sistema_ventasEntities())
+                    {
+                        lst = (
+                               from d in db.categoria
+                               select new CategoriasViewModel
+                               {
+                                   id_categoria = d.id_categoria,
+                                   nombre_categoria = d.nombre_categoria,
+                                   descripcion = d.descripcion
+                               }
+                           ).ToList();
+                    }
+
+
+                    List<SelectListItem> items = lst.ConvertAll(d =>
+                    {
+                        return new SelectListItem()
+                        {
+                            Text = d.nombre_categoria.ToString(),
+                            Value = d.id_categoria.ToString(),
+                            Selected = false
+                        };
+                    });
+
+                    ViewBag.items = items;
+
+                    long IDCategoria = Convert.ToInt32(collection["id_categoria"].Trim());
 
                     HttpPostedFileBase FileBase = Request.Files[0];
 
@@ -113,8 +139,8 @@ namespace ProyectoTiendaOnline_U2.Controllers
                         oProducto.precio = productoModel.precio;
                         oProducto.stock = productoModel.stock;
                         oProducto.foto = productoModel.foto;
-                        oProducto.id_categoria = int.Parse(categorias);
-                        oProducto.estado = estados;
+                        oProducto.id_categoria = (int)IDCategoria;
+                        oProducto.estado = productoModel.estado;
 
                         //Almacenar en la base de datos el objeto cliente
                         db.producto.Add(oProducto);
@@ -131,51 +157,5 @@ namespace ProyectoTiendaOnline_U2.Controllers
             }
         }
 
-        public List<SelectListItem> ObtenerCategoria()
-        {
-            return new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Text = "Hogar",
-                    Value = "1"
-                },
-                new SelectListItem()
-                {
-                    Text = "Laptop",
-                    Value = "2"
-                },
-                new SelectListItem()
-                {
-                    Text = "Computador de Escritorio",
-                    Value = "3"
-                },
-                new SelectListItem()
-                {
-                    Text = "Accesorios",
-                    Value = "4"
-                }
-            };
-
-
-
-        }
-
-        public List<SelectListItem> ObtenerEstado()
-        {
-            return new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Text = "Y",
-                    Value = "Y"
-                },
-                new SelectListItem()
-                {
-                    Text = "N",
-                    Value = "N"
-                }
-            };
-        }
     }
 }
