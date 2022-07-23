@@ -27,17 +27,17 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
         public byte[] foto { get; set; }
 
         [Display(Name = "id_categoria")]
-        public IEnumerable<SelectListItem> id_categoria { get; set; }
+        public int id_categoria { get; set; }
 
-        [Required]
-        [StringLength(1)]
+        
+        [StringLength(100)]
         [Display(Name = "estado")]
         public string estado { get; set; }
 
 
 
-        [Required]
-        [StringLength(1)]
+        
+        [StringLength(100)]
         [Display(Name = "categoria")]
         public string categoria { get; set; }
 
