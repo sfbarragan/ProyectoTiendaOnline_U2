@@ -1,0 +1,71 @@
+﻿
+@model ProyectoTiendaOnline_U2.Models.ViewModel.ProductoViewModel
+
+
+@{
+    ViewBag.Title = "Datos del Producto";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@using (Html.BeginForm("Nuevo", "producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                @Html.LabelFor(d => d.nombre_producto)
+                @Html.TextBoxFor(d => d.nombre_producto, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.nombre_producto, null, new { @class = "red" })
+            </div>
+
+            <div>
+                @Html.LabelFor(d => d.precio)
+                @Html.TextBoxFor(d => d.precio, "", new { @type = "number", @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.precio, null, new { @class = "red" })
+            </div>
+
+
+            <div>
+                @Html.LabelFor(d => d.stock)
+                @Html.TextBoxFor(d => d.stock, "", new { @type = "number", @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.stock, null, new { @class = "red" })
+            </div>
+
+
+            <br />
+
+            <div>
+                @Html.LabelFor(d => d.foto)
+                <input type="file" name="imageload" />
+                @Html.ValidationMessageFor(d => d.foto, "", new { @class = "text-danger" })
+
+            </div>
+
+            <br />
+            <div>
+                @Html.LabelFor(d => d.categoria)
+                @Html.DropDownList("cat", cate, "Seleccione una Categoria",new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.categoria, null, new { @class = "red" })
+            </div>
+
+            <br />
+            <div>
+                @Html.LabelFor(d => d.estado)
+                @Html.DropDownList("new", new SelectList(new[] { "A", "D" }), "Elija una categoria", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.estado, null, new { @class = "red" })
+            </div>
+            <br />
+            <div>
+                <input value="Guardar" class="btn-primary" type="submit" />
+            </div>
+
+
+        </div>
+    </div>
+
+
+}

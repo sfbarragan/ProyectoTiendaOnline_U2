@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ProyectoTiendaOnline_U2.Models.ViewModel
 {
@@ -25,13 +26,22 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
 
         public byte[] foto { get; set; }
 
-        [Required]
         [Display(Name = "id_categoria")]
-        public int id_categoria { get; set; }
+        public IEnumerable<SelectListItem> id_categoria { get; set; }
 
         [Required]
         [StringLength(1)]
         [Display(Name = "estado")]
         public string estado { get; set; }
+
+
+
+        [Required]
+        [StringLength(1)]
+        [Display(Name = "categoria")]
+        public string categoria { get; set; }
+
     }
+
+
 }
