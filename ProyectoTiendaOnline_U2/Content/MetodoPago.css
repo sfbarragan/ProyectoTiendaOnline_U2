@@ -1,0 +1,61 @@
+﻿.container_tab {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8%;
+    font-size: 25px;
+}
+
+.table_products {
+    border: 2px solid #817ff5;
+    color: whitesmoke;
+    box-shadow: #817ff5 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    width: 50%;
+    height: auto;
+}
+
+tr {
+    border: 2px solid #817ff5;
+    color: whitesmoke;
+    align-items: center;
+}
+
+td {
+    text-align: center;
+    color: whitesmoke;
+    padding: 20px;
+}
+
+.pag_title {
+    color: whitesmoke;
+    font-size: 50px;
+    text-shadow: 0 0 5px #817ff5, 0 0 10px #817ff5;
+}
+
+body {
+    background-color: #1c1d22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Work Sans', sans-serif;
+}
+
+button {
+    width: 150px;
+    height: auto;
+    background-color: #817ff5;
+    border: 2px solid;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.textoAgregar {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-family: 'Work Sans', sans-serif;
+}

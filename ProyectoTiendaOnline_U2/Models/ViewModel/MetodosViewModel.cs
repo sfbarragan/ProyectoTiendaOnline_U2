@@ -9,6 +9,5 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
     {
         public int id_modopago { get; set; }
         public string nombre { get; set; }
-
     }
 }

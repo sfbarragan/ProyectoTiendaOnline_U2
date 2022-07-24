@@ -8,10 +8,11 @@ namespace ProyectoTiendaOnline_U2.Models.ViewModel
 {
     public class ListMetodosViewModel
     {
+        
         public int id_modopago { get; set; }
         [Required]
-        [Display(Name="Nombre Método")]
+        [StringLength(100)]
+        [Display(Name = "Nombre")]
         public string nombre { get; set; }
-
     }
 }

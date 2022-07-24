@@ -170,7 +170,9 @@
     <Compile Include="Models\producto.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModel\ListMetodosViewModel.cs" />
     <Compile Include="Models\ViewModel\ListProductoViewModel.cs" />
+    <Compile Include="Models\ViewModel\MetodosViewModel.cs" />
     <Compile Include="Models\ViewModel\ProductoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -179,6 +181,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\MetodoPago.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

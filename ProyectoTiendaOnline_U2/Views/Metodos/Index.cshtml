@@ -1,7 +1,32 @@
-﻿
+﻿@model List<ProyectoTiendaOnline_U2.Models.ViewModel.ListMetodosViewModel>
 @{
     ViewBag.Title = "Index";
 }
+@Styles.Render("~/Content/MetodoPago.css")
 
-<h2>Index</h2>
+
+
+<div class="container_tab">
+    <h2 class="pag_title">Métodos de Pago</h2>
+    <a class="btn btn-primary" href="~Metodo/Nuevo">Agregar Metodos</a> <br>
+    <table class="table_products">
+       
+            <tr>
+                <th>Nombre</th>
+            </tr>
+      
+            @foreach (var oElemento in Model)
+             {
+                <tr>
+                    <td>@oElemento.nombre</td>
+                </tr>
+                <tr>
+                    <td><a class="btn btn-default" href="@Url.Action("Eliminar","Metodos", new { id = @oElemento.id_modopago })">Eliminar</a></td>
+                    
+                </tr>
+             }
+            
+    
+    </table>
+</div>
 
