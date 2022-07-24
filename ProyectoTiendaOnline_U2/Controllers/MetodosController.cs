@@ -25,5 +25,45 @@ namespace ProyectoTiendaOnline_U2.Controllers
             }
             return View(listMetodos);
         }
+        public ActionResult Eliminar(int id)
+        {
+            using (sistema_ventasEntities db = new sistema_ventasEntities())
+            {
+                var oMetodo = db.modo_pago.Find(id);
+                db.modo_pago.Remove(oMetodo);
+                db.SaveChanges();
+            }
+            return Redirect("~/Metodos");
+
+        }
+        public ActionResult Nuevo()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Nuevo(MetodosViewModel metodosView)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using(sistema_ventasEntities db = new sistema_ventasEntities())
+                    {
+                        var oMetodo = new modo_pago();
+                        oMetodo.nombre = metodosView.nombre;
+                        db.modo_pago.Add(oMetodo);
+                        db.SaveChanges();
+                    }
+                    return Redirect("~/Metodos");
+                }
+                return View(metodosView);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+      
     }
 }
