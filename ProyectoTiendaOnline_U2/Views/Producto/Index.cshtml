@@ -5,6 +5,17 @@
 
 <h2> @ViewBag.Title</h2>
 
+<script type="text/javascript">
+    function Delete() {
+        var res = confirm("¿Desea eliminar el producto?");
+        if (res == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
 <div class="row">
     <div class="col-md-12">
         <div class="row" style="text-align:right; padding:10px">
@@ -42,8 +53,8 @@
                     <td>@oElemento.categoria</td>
                     <td>@oElemento.estado</td>
                     <td>
-                        <a class="btn btn-default" href="@Url.Action("Editar", "Cliente", new { id = @oElemento.id_producto})">Editar</a>
-                        <a class="btn btn-danger" href="@Url.Action("Eliminar", "Cliente", new { id = @oElemento.id_producto  })" onclick="return Delete()">Eliminar</a>
+                        <a class="btn btn-default" href="@Url.Action("Editar", "Producto", new { id = @oElemento.id_producto})">Editar</a>
+                        <a class="btn btn-danger" href="@Url.Action("Eliminar", "Producto", new { id = @oElemento.id_producto  })" onclick="return Delete()">Eliminar</a>
                     </td>
                 </tr>
             }

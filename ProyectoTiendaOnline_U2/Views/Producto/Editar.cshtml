@@ -1,20 +1,16 @@
-﻿
-@model ProyectoTiendaOnline_U2.Models.ViewModel.ProductoViewModel
-
-
+﻿@model ProyectoTiendaOnline_U2.Models.ViewModel.ProductoViewModel
 @{
-    ViewBag.Title = "Datos del Producto";
+    ViewBag.Title = "Actualizar producto";
 }
-
 
 <h2>@ViewBag.Title</h2>
 
-
-
-@using (Html.BeginForm("Nuevo", "producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Editar", "producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="row">
         <div class="col-md-12">
+            @Html.HiddenFor(d => d.id_producto)
+           
             <div>
                 @Html.LabelFor(d => d.nombre_producto)
                 @Html.TextBoxFor(d => d.nombre_producto, "", new { @class = "form-control" })
@@ -23,7 +19,7 @@
 
             <div>
                 @Html.LabelFor(d => d.precio)
-                @Html.TextBoxFor(d => d.precio, "", new { @type = "number", @class = "form-control" })
+                @Html.TextBoxFor(d => d.precio, "", new { @class = "form-control" })
                 @Html.ValidationMessageFor(d => d.precio, null, new { @class = "red" })
             </div>
 
@@ -39,7 +35,9 @@
 
             <div>
                 @Html.LabelFor(d => d.foto)
-                <input type="file" name="imageload" />
+                <img width="200" src="@Url.Action("obtenerImagen", "producto", new { id = Model.id_producto})" />
+                <br /><br />
+                <input type="file" name="imageload" class="form-control"/>
                 @Html.ValidationMessageFor(d => d.foto, "", new { @class = "text-danger" })
 
             </div>
@@ -60,7 +58,7 @@
             </div>
             <br />
             <div>
-                <input value="Guardar" class="btn-primary" type="submit" />
+                <input value="Actualizar" class="btn-primary" type="submit" />
             </div>
 
 

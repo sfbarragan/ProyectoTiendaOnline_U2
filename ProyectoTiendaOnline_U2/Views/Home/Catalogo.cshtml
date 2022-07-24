@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Catalogo de Productos";
+}
+<link rel="stylesheet" href="~/Content/Site.css">
+
+<h2>@ViewBag.Title</h2>
+
+
+<div class="contenido">
+    <div>
+        <h1>Encuentra los mejores productos</h1>
+    </div>
+    <div></div>
+
+    @foreach (var oElemento in Model)
+    {
+        <div class="item">
+            <img src="@Url.Action("obtenerImagen", "producto", new { id = @oElemento.id_producto, @class="item-img"})" />
+
+            <div class="item-text">
+                <h3>@oElemento.categoria</h3>
+                <p>
+                    <a href="@Html.ActionLink("Comprar", "Facturacion", new { id = @oElemento.id_producto, @class = "enlaces" })" > @oElemento.nombre_producto , USD$ @oElemento.precio </a>
+                </p>
+            </div>
+        </div>
+    }
+</div>
+

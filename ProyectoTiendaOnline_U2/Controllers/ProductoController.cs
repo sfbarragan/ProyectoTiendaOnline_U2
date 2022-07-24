@@ -61,103 +61,78 @@ namespace ProyectoTiendaOnline_U2.Controllers
             List<CategoriasViewModel> lst = null;
             using (Models.sistema_ventasEntities db = new Models.sistema_ventasEntities())
             {
-                 lst = (
-                        from d in db.categoria
-                        select new CategoriasViewModel
-                        {
-                            id_categoria = d.id_categoria,
-                            nombre_categoria = d.nombre_categoria,
-                            descripcion = d.descripcion
-                        }
-                    ).ToList();
+                lst = (
+                       from d in db.categoria
+                       select new CategoriasViewModel
+                       {
+                           id_categoria = d.id_categoria,
+                           nombre_categoria = d.nombre_categoria,
+                           descripcion = d.descripcion
+                       }
+                   ).ToList();
             }
-            
+            sistema_ventasEntities _context = new sistema_ventasEntities();
+            ViewBag.items = new SelectList(_context.categoria, "id_categoria", "nombre_categoria");
 
-            List<SelectListItem> items = lst.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombre_categoria.ToString(),
-                    Value = d.id_categoria.ToString(),
-                    Selected = false
-                };
-            } );
-            var DB = new Models.sistema_ventasEntities();
-            IEnumerable<SelectListItem> cat = DB.categoria.Select
-                (b => new SelectListItem
-                {
-                    Value = b.id_categoria.ToString(),
-                    Text = b.nombre_categoria
-                });
-
-            ViewData["cat"] = cat;
-
-            ViewBag.items = items;
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Nuevo(ProductoViewModel productoModel, FormCollection collection)
+        public ActionResult Nuevo(ProductoViewModel productoModel)
         {
             try
             {
-                //Validar el Modelo
-                if (ModelState.IsValid)
+                List<CategoriasViewModel> lst = null;
+                using (Models.sistema_ventasEntities db = new Models.sistema_ventasEntities())
                 {
-                    List<CategoriasViewModel> lst = null;
-                    using (Models.sistema_ventasEntities db = new Models.sistema_ventasEntities())
-                    {
-                        lst = (
-                               from d in db.categoria
-                               select new CategoriasViewModel
-                               {
-                                   id_categoria = d.id_categoria,
-                                   nombre_categoria = d.nombre_categoria,
-                                   descripcion = d.descripcion
-                               }
-                           ).ToList();
-                    }
-
-
-                    List<SelectListItem> items = lst.ConvertAll(d =>
-                    {
-                        return new SelectListItem()
-                        {
-                            Text = d.nombre_categoria.ToString(),
-                            Value = d.id_categoria.ToString(),
-                            Selected = false
-                        };
-                    });
-
-                    ViewBag.items = items;
-                    
-                    long IDCategoria = Convert.ToInt32(collection["id_categoria"].Trim());
-
-                    HttpPostedFileBase FileBase = Request.Files[0];
-
-                    WebImage image = new WebImage(FileBase.InputStream);
-
-                    productoModel.foto = image.GetBytes();
-
-                    //Conexion a la base de datos y paso de datos del modelo a un objeto tipo cliente
-                    using (sistema_ventasEntities db = new sistema_ventasEntities())
-                    {
-                        var oProducto = new producto();
-                        oProducto.nombre_producto = productoModel.nombre_producto;
-                        oProducto.precio = productoModel.precio;
-                        oProducto.stock = productoModel.stock;
-                        oProducto.foto = productoModel.foto;
-                        oProducto.id_categoria = (int)IDCategoria;
-                        oProducto.estado = productoModel.estado;
-
-                        //Almacenar en la base de datos el objeto cliente
-                        db.producto.Add(oProducto);
-                        db.SaveChanges();
-                    }
-                    return Redirect("~/Producto");
+                    lst = (
+                           from d in db.categoria
+                           select new CategoriasViewModel
+                           {
+                               id_categoria = d.id_categoria,
+                               nombre_categoria = d.nombre_categoria,
+                               descripcion = d.descripcion
+                           }
+                       ).ToList();
                 }
-                return View(productoModel);
+
+
+                List<SelectListItem> items = lst.ConvertAll(d =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = d.nombre_categoria.ToString(),
+                        Value = d.id_categoria.ToString(),
+                        Selected = false
+                    };
+                });
+
+                ViewBag.items = items;
+
+
+                HttpPostedFileBase FileBase = Request.Files[0];
+
+                WebImage image = new WebImage(FileBase.InputStream);
+
+                productoModel.foto = image.GetBytes();
+
+                //Conexion a la base de datos y paso de datos del modelo a un objeto tipo cliente
+                using (sistema_ventasEntities db = new sistema_ventasEntities())
+                {
+                    var oProducto = new producto();
+                    oProducto.nombre_producto = productoModel.nombre_producto;
+                    oProducto.precio = productoModel.precio;
+                    oProducto.stock = productoModel.stock;
+                    oProducto.foto = productoModel.foto;
+                    oProducto.id_categoria = productoModel.id_categoria;
+                    oProducto.estado = productoModel.estado;
+
+                    //Almacenar en la base de datos el objeto cliente
+                    db.producto.Add(oProducto);
+                    db.SaveChanges();
+                }
+                return Redirect("~/Producto");
 
             }
             catch (Exception ex)
@@ -165,6 +140,106 @@ namespace ProyectoTiendaOnline_U2.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+
+        public ActionResult Editar(int id)
+        {
+            List<CategoriasViewModel> lst = null;
+            using (Models.sistema_ventasEntities db = new Models.sistema_ventasEntities())
+            {
+                lst = (
+                       from d in db.categoria
+                       select new CategoriasViewModel
+                       {
+                           id_categoria = d.id_categoria,
+                           nombre_categoria = d.nombre_categoria,
+                           descripcion = d.descripcion
+                       }
+                   ).ToList();
+            }
+            sistema_ventasEntities _context = new sistema_ventasEntities();
+            ViewBag.items = new SelectList(_context.categoria, "id_categoria", "nombre_categoria");
+
+            ProductoViewModel model = new ProductoViewModel();
+
+            using (sistema_ventasEntities db = new sistema_ventasEntities())
+            {
+                var oProducto = db.producto.Find(id);
+                model.id_producto = oProducto.id_producto;
+                model.nombre_producto = oProducto.nombre_producto;
+                model.precio = oProducto.precio;
+                model.stock = oProducto.stock;
+                model.id_categoria = oProducto.id_categoria;
+                model.estado = oProducto.estado;
+                model.foto = oProducto.foto;
+
+            }
+            return View(model);
+
+
+        }
+
+        [HttpPost]
+        public ActionResult Editar(ProductoViewModel productoModel)
+        {
+            try
+            {
+
+                
+                //Validar el formulario
+                if (ModelState.IsValid)
+                {
+                    using (sistema_ventasEntities db = new sistema_ventasEntities())
+                    {
+
+                        byte[] imagenActual = null;
+                        HttpPostedFileBase FileBase = Request.Files[0];
+
+                        if (FileBase == null)
+                        {
+                            imagenActual = db.producto.SingleOrDefault(t => t.id_producto == productoModel.id_producto).foto;
+                        }
+                        else
+                        {
+
+                            WebImage image = new WebImage(FileBase.InputStream);
+
+                            productoModel.foto = image.GetBytes();
+                        }
+
+
+                        var oProducto = db.producto.Find(productoModel.id_producto);
+                        oProducto.nombre_producto = productoModel.nombre_producto;
+                        oProducto.precio = productoModel.precio;
+                        oProducto.stock = productoModel.stock;
+                        oProducto.id_categoria = productoModel.id_categoria;
+                        oProducto.estado = productoModel.estado;
+                        oProducto.foto = productoModel.foto;
+
+                        db.Entry(oProducto).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    return Redirect("~/Producto/");
+                }
+                return View(productoModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ActionResult Eliminar(int id)
+        {
+            using (sistema_ventasEntities db = new sistema_ventasEntities())
+            {
+                var oProducto = db.producto.Find(id);
+                db.producto.Remove(oProducto);
+                db.SaveChanges();
+            }
+            return Redirect("~/Producto");
+        }
+
 
     }
 }
