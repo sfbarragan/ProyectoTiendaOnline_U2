@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="sistema_ventasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="sistema_ventasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="admins">
           <Key>
             <PropertyRef Name="id_user" />
@@ -43,6 +43,9 @@
           <Property Name="id_producto" Type="int" Nullable="false" />
           <Property Name="cantidad" Type="int" Nullable="false" />
           <Property Name="precio" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="precioUnitario" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="total" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="IVA" Type="decimal" Precision="6" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="factura">
           <Key>
@@ -52,9 +55,7 @@
           <Property Name="id_cliente" Type="int" Nullable="false" />
           <Property Name="id_modopago" Type="int" Nullable="false" />
           <Property Name="fecha" Type="date" Nullable="false" />
-          <Property Name="subtotal" Type="decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="IVA" Type="decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="total" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="numeroFactura" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="modo_pago">
           <Key>
@@ -164,8 +165,7 @@
             <End Role="producto" EntitySet="producto" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="sistema_ventasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -207,10 +207,13 @@
           <Property Name="id_detalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_factura" Type="Int32" Nullable="false" />
           <Property Name="id_producto" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
-          <Property Name="precio" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="cantidad" Nullable="false" Type="Int32" />
+          <Property Name="precio" Nullable="false" Precision="8" Scale="2" Type="Decimal" />
           <NavigationProperty Name="factura" Relationship="Self.detalle_ibfk_1" FromRole="detalle" ToRole="factura" />
           <NavigationProperty Name="producto" Relationship="Self.detalle_ibfk_2" FromRole="detalle" ToRole="producto" />
+          <Property Name="precioUnitario" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
+          <Property Name="total" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
+          <Property Name="IVA" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
         </EntityType>
         <EntityType Name="factura">
           <Key>
@@ -220,12 +223,10 @@
           <Property Name="id_cliente" Type="Int32" Nullable="false" />
           <Property Name="id_modopago" Type="Int32" Nullable="false" />
           <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="subtotal" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="IVA" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="total" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
           <NavigationProperty Name="cliente" Relationship="Self.factura_ibfk_1" FromRole="factura" ToRole="cliente" />
           <NavigationProperty Name="detalle" Relationship="Self.detalle_ibfk_1" FromRole="factura" ToRole="detalle" />
           <NavigationProperty Name="modo_pago" Relationship="Self.factura_ibfk_2" FromRole="factura" ToRole="modo_pago" />
+          <Property Name="numeroFactura" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="modo_pago">
           <Key>
@@ -379,6 +380,9 @@
           <EntitySetMapping Name="detalle">
             <EntityTypeMapping TypeName="sistema_ventasModel.detalle">
               <MappingFragment StoreEntitySet="detalle">
+                <ScalarProperty Name="IVA" ColumnName="IVA" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="precioUnitario" ColumnName="precioUnitario" />
                 <ScalarProperty Name="id_detalle" ColumnName="id_detalle" />
                 <ScalarProperty Name="id_factura" ColumnName="id_factura" />
                 <ScalarProperty Name="id_producto" ColumnName="id_producto" />
@@ -390,14 +394,12 @@
           <EntitySetMapping Name="factura">
             <EntityTypeMapping TypeName="sistema_ventasModel.factura">
               <MappingFragment StoreEntitySet="factura">
+                <ScalarProperty Name="numeroFactura" ColumnName="numeroFactura" />
                 <ScalarProperty Name="id_factura" ColumnName="id_factura" />
                 <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
                 <ScalarProperty Name="id_modopago" ColumnName="id_modopago" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
-                <ScalarProperty Name="subtotal" ColumnName="subtotal" />
-                <ScalarProperty Name="IVA" ColumnName="IVA" />
-                <ScalarProperty Name="total" ColumnName="total" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="modo_pago">

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<ProyectoTiendaOnline_U2.Models.ViewModel.CarritoViewModel>
+
+@{
+    ViewBag.Title = "Carrito de compra";
+    decimal CantidadTotal = 0.00M;
+    decimal contador = 1;
+
+}
+
+<h2>@ViewBag.Title</h2>
+
+<script type="text/javascript">
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    });
+
+
+    function Delete() {
+        var res = confirm("¿Desea retirar del carrito?");
+        if (res == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+</script>
+
+<div class="container">
+    @using (Html.BeginForm("AñadirFactura", "Carrito", FormMethod.Post))
+    {
+        <table class="table-condensed table-responsive table table-hover">
+            <tr>
+                <th>N</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            @foreach (var producto in Model)
+            {
+                CantidadTotal += producto.Total;
+                <tr>
+                    <td>@contador</td>
+                    <td>@producto.Nombre</td>
+                    <td>@producto.Cantidad</td>
+                    <td>@producto.PrecioUnitario.ToString("#,##0.00")</td>
+                    <td>@producto.Total.ToString("#,##0.00")</td>
+                    <td>
+                        <div class="center-block">
+                            <a class="btn btn-danger" onclick="return Delete()" href="@Url.Action("Eliminar", "Carrito", new { id_productoCarrito = producto.Id_producto})">Quitar</a>
+                        </div>
+                    </td>
+                </tr>
+                contador++;
+            }
+            <tr>
+                <td colspan="4" class="text-right">
+                    <h3>Precio Total</h3>
+                </td>
+                <td>
+                    <h3>@CantidadTotal.ToString("#,##0.00")</h3>
+                </td>
+            </tr>
+        </table>
+        <div class="container">
+            <a class="btn btn-toolbar" href="@Url.Action("Catalogo","Home")">Seguir comprando</a>
+            <input data-toggle="modal" data-target="#myModal" type="button" value="Comprar" name="Compra" class="btn btn-success" id="GuardarFactura" />
+        </div>
+
+        @Styles.Render("~/Content/scss")
+
+        <!--Modal-->
+        <div class="modal" id="myModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="iphone">
+                            <header class="header">
+                                <h1>Facturación</h1>
+                            </header>
+                            <fieldset>
+                                <legend>Método de Pago</legend>
+
+                                <div class="form__radios">
+                                    <div class="form__radio">
+                                        <label for="mastercard">Aquí</label>
+                                        <input id="mastercard" name="payment-method" type="radio" />
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div>
+                                <h2>Resumen de la compra</h2>
+
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>Subotal</td>
+                                            <td align="right">@CantidadTotal $USD</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IVA 12%</td>
+                                            <td align="right">@(CantidadTotal*(decimal)0.12).Form $USD</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Precio Total</td>
+                                            <td align="right">@(CantidadTotal+ (@CantidadTotal* (decimal)0.12))</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td align="right">$88.36</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div>
+                                <button class="button button--full" type="submit">
+                                    <svg class="icon">
+                                        <use xlink:href="#icon-shopping-bag" />
+                                    </svg>Buy Now
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,10 +1,32 @@
 ﻿@{
     ViewBag.Title = "Catalogo de Productos";
 }
-<link rel="stylesheet" href="~/Content/Site.css">
 
 <h2>@ViewBag.Title</h2>
 
+<script type="text/javascript">
+    function agregarCarrito(id_producto) {
+        var formData = new FormData();
+        formData.append("Id_producto", id_producto);
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            url: '/Carrito/Index',
+            success: function (data) {
+                if (data.Success) {
+                    $("#cartItem").text("Carrito(" + data.Counter + ")");
+                }
+            },
+            error: function(){
+                alert("Hubo un problema");
+            }
+        });
+    }
+</script>
 
 <div class="contenido">
     <div>
@@ -18,9 +40,12 @@
             <img src="@Url.Action("obtenerImagen", "producto", new { id = @oElemento.id_producto, @class="item-img"})" />
 
             <div class="item-text">
-                <h3>@oElemento.categoria</h3>
+                <h3>@oElemento.nombre_producto</h3>
+                <hr />
                 <p>
-                    <a href="@Html.ActionLink("Comprar", "Facturacion", new { id = @oElemento.id_producto, @class = "enlaces" })" > @oElemento.nombre_producto , USD$ @oElemento.precio </a>
+                    <span>USD$ @oElemento.precio </span>
+                    <input type="button" class="btn btn-primary navbar-right" name="AñadirCarrito" value="Añadir al carrito"
+                           id="btnAgregarCarrito" onclick="agregarCarrito(@oElemento.id_producto)"/>
                 </p>
             </div>
         </div>
