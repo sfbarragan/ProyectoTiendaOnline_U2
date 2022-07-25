@@ -26,5 +26,9 @@ namespace ProyectoTiendaOnline_U2.Controllers
 
             return View();
         }
+        public ActionResult Admin()
+        {
+            return View();
+        }
     }
 }
