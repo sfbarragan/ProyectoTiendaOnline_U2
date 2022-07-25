@@ -15,6 +15,7 @@ namespace ProyectoTiendaOnline_U2.Controllers
 {
     public class ProductoController : Controller
     {
+
         // GET: Producto
         public ActionResult Index()
         {
@@ -185,7 +186,7 @@ namespace ProyectoTiendaOnline_U2.Controllers
             try
             {
 
-                
+
                 //Validar el formulario
                 if (ModelState.IsValid)
                 {
@@ -239,7 +240,5 @@ namespace ProyectoTiendaOnline_U2.Controllers
             }
             return Redirect("~/Producto");
         }
-
-
     }
 }

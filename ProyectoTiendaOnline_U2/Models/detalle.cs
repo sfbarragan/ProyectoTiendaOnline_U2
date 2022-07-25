@@ -19,6 +19,9 @@ namespace ProyectoTiendaOnline_U2.Models
         public int id_producto { get; set; }
         public int cantidad { get; set; }
         public decimal precio { get; set; }
+        public decimal precioUnitario { get; set; }
+        public decimal total { get; set; }
+        public decimal IVA { get; set; }
     
         public virtual factura factura { get; set; }
         public virtual producto producto { get; set; }

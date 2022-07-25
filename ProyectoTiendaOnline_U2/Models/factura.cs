@@ -24,9 +24,7 @@ namespace ProyectoTiendaOnline_U2.Models
         public int id_cliente { get; set; }
         public int id_modopago { get; set; }
         public System.DateTime fecha { get; set; }
-        public decimal subtotal { get; set; }
-        public decimal IVA { get; set; }
-        public decimal total { get; set; }
+        public string numeroFactura { get; set; }
     
         public virtual cliente cliente { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
